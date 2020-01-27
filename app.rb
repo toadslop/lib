@@ -1,11 +1,12 @@
-require_relative 'cookbook'
-require_relative 'controller'
-require_relative 'router'
-require_relative 'recipe'
+require "sinatra"
+require "sinatra/reloader" if development?
+require "pry-byebug"
+require "better_errors"
+configure :development do
+  use BetterErrors::Middleware
+  BetterErrors.application_root = File.expand_path('..', __FILE__)
+end
 
-csv_file_path = File.join(__dir__, 'recipes.csv')
-cookbook = Cookbook.new(csv_file_path)
-controller = Controller.new(cookbook)
-router = Router.new(controller)
-
-router.run
+get '/' do
+  'Hello world!'
+end
